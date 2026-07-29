@@ -12,6 +12,8 @@ recognition.lang = "en-US";
 recognition.continuous = false;
 recognition.interimResults = false;
 
+let title = "";
+
 function speak(text){
     const speech = new SpeechSynthesisUtterance(text);
     speech.rate = 1;
@@ -22,7 +24,7 @@ function speak(text){
 
 micBtn.onclick = function(){
 
-    status.innerHTML="🎤 Listening...";
+    status.innerHTML = "🎤 Listening...";
     recognition.start();
 
 }
@@ -31,64 +33,95 @@ recognition.onresult = function(event){
 
     const command = event.results[0][0].transcript.toLowerCase();
 
-    chat.innerHTML="<b>Ma'am:</b> "+command;
+    chat.innerHTML += "<br><b>You:</b> " + command;
 
-    if(command.includes("hello")){
+    // First ask Sir or Ma'am
+    if(title === ""){
 
-        let reply="Welcome Ma'am. I am Jarvis, AI Assistant of the Department of Computer Science with Artificial Intelligence. How can I help you?";
+        if(command.includes("sir")){
 
-        speak(reply);
+            title = "Sir";
 
-        chat.innerHTML+="<br><br><b>Jarvis:</b> "+reply;
+            let reply = "Welcome Sir. I am Jarvis, AI Assistant of the Department of Computer Science with Artificial Intelligence. How can I help you?";
+
+            speak(reply);
+
+            chat.innerHTML += "<br><br><b>Jarvis:</b> " + reply;
+
+        }
+
+        else if(command.includes("ma'am") || command.includes("madam")){
+
+            title = "Ma'am";
+
+            let reply = "Welcome Ma'am. I am Jarvis, AI Assistant of the Department of Computer Science with Artificial Intelligence. How can I help you?";
+
+            speak(reply);
+
+            chat.innerHTML += "<br><br><b>Jarvis:</b> " + reply;
+
+        }
+
+        else{
+
+            let reply = "Welcome. Please tell me, should I address you as Sir or Ma'am?";
+
+            speak(reply);
+
+            chat.innerHTML += "<br><br><b>Jarvis:</b> " + reply;
+
+        }
+
+        return;
 
     }
 
-    else if(command.includes("department")){
+    if(command.includes("department")){
 
-        let reply="Our department conducts innovative Artificial Intelligence events including AI Vision Arena and AI Reel Battle.";
+        let reply = "Our department conducts innovative Artificial Intelligence events including AI Vision Arena and AI Reel Battle.";
 
         speak(reply);
 
-        chat.innerHTML+="<br><br><b>Jarvis:</b> "+reply;
+        chat.innerHTML += "<br><br><b>Jarvis:</b> " + reply;
 
     }
 
     else if(command.includes("event")){
 
-        let reply="Prompt Association Day showcases AI creativity, innovation and student talent.";
+        let reply = "Prompt Association Day showcases AI creativity, innovation and student talent.";
 
         speak(reply);
 
-        chat.innerHTML+="<br><br><b>Jarvis:</b> "+reply;
+        chat.innerHTML += "<br><br><b>Jarvis:</b> " + reply;
 
     }
 
     else if(command.includes("thank you") || command.includes("bye")){
 
-        let reply="Thank you Ma'am. Here is your scanner.";
+        let reply = "Thank you " + title + ". Here is your scanner.";
 
         speak(reply);
 
-        chat.innerHTML+="<br><br><b>Jarvis:</b> "+reply;
+        chat.innerHTML += "<br><br><b>Jarvis:</b> " + reply;
 
-        scanner.style.display="block";
+        scanner.style.display = "block";
 
     }
 
     else{
 
-        let reply="Sorry Ma'am. Please ask about the department or the event.";
+        let reply = "Sorry " + title + ". Please ask about the department or the event.";
 
         speak(reply);
 
-        chat.innerHTML+="<br><br><b>Jarvis:</b> "+reply;
+        chat.innerHTML += "<br><br><b>Jarvis:</b> " + reply;
 
     }
 
 }
 
-recognition.onerror=function(){
+recognition.onerror = function(){
 
-status.innerHTML="Please allow microphone permission.";
+    status.innerHTML = "Please allow microphone permission.";
 
 }
